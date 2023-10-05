@@ -1,9 +1,17 @@
 // create web server
-// 1. import express
-const express = require('express')
-// 2. create web server object
-const app = express()
-// 3. listen to port 3000
-app.listen(3000, function () {
-    console.log("server running at http://localhost:3000")
-})
+
+var express = require('express');
+var path = require('path');
+var app = express();
+
+// serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// serve index.html
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// start server
+app.listen(8080);
+console.log('Server started: http://localhost:8080/');
