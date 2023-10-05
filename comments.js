@@ -1,17 +1,29 @@
 // create web server
 
-var express = require('express');
-var path = require('path');
-var app = express();
+const express = require('express');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const app = express();
+const port = 3000;
 
-// serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.urlencoded({extended: false}));
 
-// serve index.html
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get('/', (req, res) => {
+    fs.readFile('index.html', 'utf8', (err, data) => {
+        res.send(data);
+    });
 });
 
-// start server
-app.listen(8080);
-console.log('Server started: http://localhost:8080/');
+app.post('/add_comment', (req, res) => {
+    const name = req.body.name;
+    const comment = req.body.comment;
+    const date = new Date();
+
+    fs.appendFile('comments.txt', `${name} : ${comment} : ${date}\n`, (err) => {
+        res.redirect('/');
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on ${port}`);
+});
