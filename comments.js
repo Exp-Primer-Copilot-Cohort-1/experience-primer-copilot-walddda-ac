@@ -5,4 +5,5 @@ const express = require('express')
 const app = express()
 // 3. listen to port 3000
 app.listen(3000, function () {
-    console.log("server running at http://
+    console.log("server running at http://localhost:3000")
+})
